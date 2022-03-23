@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
     <title>RealChat App</title>
     <style>
       body {
@@ -64,6 +63,33 @@
       <button>Send</button>
     </form>
 
-    <script src="user.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      // scriptの中にclientサイドを書いていく。
+      // 以下でserverサイドとclientサイドを連携する事ができる。
+      let socket = io();
+
+      // メッセージを送信していく
+      const form = document.getElementById("form");
+      const input = document.getElementById("input");
+      const messages = document.getElementById("messages");
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if(input.value) {
+          // emit = 送信する
+          // 第一引数にはserver側で受け取るためのkeyを設定。
+          socket.emit("chat message", input.value);
+          // 送信したら空にする
+          input.value = "";
+        }
+      });
+      socket.on("chat message", function(msg) {
+        let item = document.createElement("li");
+        item.textContent = msg;
+        messages.appendChild(item);
+      })
+
+    </script>
   </body>
 </html>
