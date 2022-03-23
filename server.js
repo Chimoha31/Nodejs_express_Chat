@@ -24,6 +24,7 @@ io.on("connection", (socket) => {
   })
 })
 
-server.listen(PORT, () => {
+// herokuでは3000は使われていないため、デプロイするときは必ずprocess.env.PORT(herokuが既に用意しているport)としなければデプロイできない。
+server.listen(process.env.PORT || 3000, () => {
   console.log("listening on 3000")
 });
